@@ -1,16 +1,28 @@
 {
-  "$schema": "https://turbo.build/schema.json",
-  "globalDependencies": ["**/.env.*local","**/.env"],
-  "pipeline": {
-    "build": {
-      "dependsOn": ["^build"],
-      "outputs": [".next/**", "!.next/cache/**"]
-    },
-    "lint": {
-      "outputs": []
-    },
-    "dev": {
-      "cache": false
-    }
-  }
+"$schema": "https://turbo.build/schema.json",
+"globalDependencies": ["/.env.*local","/.env"],
+"pipeline": {
+"build": {
+"dependsOn": ["^build"],
+"outputs": [".next/", "!.next/cache/"]
+},
+"lint": {
+"outputs": []
+},
+"dev": {
+"cache": false
+}
+},
+"flavors": {
+"production": {
+"environmentVariables": {
+"API_URL": "https://api.example.com"
+}
+},
+"development": {
+"environmentVariables": {
+"API_URL": "http://localhost:3000"
+}
+}
+}
 }
