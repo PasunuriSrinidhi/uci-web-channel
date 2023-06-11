@@ -9,23 +9,25 @@ interface UseMountOptions {
 
 function useMount({ active = false, ref, delay = 300 }: UseMountOptions) {
   const [isShow, setIsShow] = useState(false);
-  const [didMount, setDidMount] = useState(false);
-  const timeout = useRef<ReturnType<typeof setTimeout>>();
+  const timeoutRef = useRef<number | undefined>(undefined);
+
+  useEffect(() => {
 
   const clear = () => {
-    if (timeout.current) {
-      clearTimeout(timeout.current);
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
     }
   };
 
-  useEffect(() => {
-    if (active) {
+  if (active) {
       clear();
-      setDidMount(active);
+      setIsShow(true);
     } else {
-      setIsShow(active);
-      timeout.current = setTimeout(() => {
-        setDidMount(active);
+      clear();
+      setIsShow(false);
+
+      timeoutRef.current = window.setTimeout(() => {
+        setIsShow(true);
       }, delay);
     }
 
@@ -36,11 +38,10 @@ function useMount({ active = false, ref, delay = 300 }: UseMountOptions) {
     if (ref.current) {
       reflow(ref.current);
     }
-    setIsShow(didMount);
-  }, [didMount, ref]);
+  }, [ref]);
 
   return {
-    didMount,
+    didMount: active,
     isShow,
   };
 }
