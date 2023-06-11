@@ -1,6 +1,22 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "globalDependencies": ["**/.env.*local","**/.env"],
+  "flavors": {
+    "production": {
+      "dependencies": ["^build"],
+      "outputs": [".next/**", "!.next/cache/**"],
+      "env": {
+        "API_URL": "https://api.example.com"
+      }
+    },
+    "development": {
+      "dependencies": ["^build"],
+      "outputs": [".next/**", "!.next/cache/**"],
+      "env": {
+        "API_URL": "http://localhost:3000"
+      }
+    }
+  },
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
